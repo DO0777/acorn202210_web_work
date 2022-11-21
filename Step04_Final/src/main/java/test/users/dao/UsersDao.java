@@ -20,6 +20,50 @@ public class UsersDao {
       return dao;
    }
    
+   //인자로 전달된 아이디에 해당하는 가입정보를 리턴해주는 메소드
+   public UsersDto getData(String id) {
+	      
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs=null;
+	      
+	      UsersDto dto = new UsersDto();
+
+	      try {
+	         conn = new DbcpBean().getConn();
+	         String sql = "SELECT pwd, email, profile, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
+	               + " FROM users"
+	               + " WHERE id=?";
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, id);
+	         
+	         rs=pstmt.executeQuery();
+	         if(rs.next()) {
+	            dto.setId(id);
+	            dto.setPwd(rs.getString("pwd"));
+	            dto.setEmail(rs.getString("email"));
+	            dto.setProfile(rs.getString("profile"));
+	            dto.setRegdate(rs.getString("regdate"));
+	         }
+
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }
+	      }
+
+	      return dto;
+	   }
+   
    //인자로 전달되는 dto 에 있는 아이디와, 비밀번호를 이용해서 해당 정보가 유효한 정보인지 여부를 리턴하는 메소드 
    public boolean isValid(UsersDto dto) {
       
@@ -99,4 +143,4 @@ public class UsersDao {
       }
    }
 }
-
+	   
