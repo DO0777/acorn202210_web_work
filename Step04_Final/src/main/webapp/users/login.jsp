@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+
+	request.setCharacterEncoding("utf-8");
 	//로그인후 가야할 목적지 정보
 	String url=request.getParameter("url");
 	//로그인 실패를 대비해서 목적지 정보를 인코딩한 결과도 준비한다.
@@ -11,7 +13,7 @@
 
 
    // 1. 폼 전송되는 아이디, 비밀번호 읽어오기
-   request.setCharacterEncoding("utf-8");
+
    String id = request.getParameter("id");
    String pwd = request.getParameter("pwd");
 
